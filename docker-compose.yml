@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  bom-proj-nestjs:
+    container_name: bom-proj-nestjs
+    restart: always
+    build: .
+    ports:
+      - ${PORT}:${PORT}
+    volumes:
+      - /usr/src/app
