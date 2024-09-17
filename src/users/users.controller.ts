@@ -35,6 +35,8 @@ export class UsersController {
     } catch (error) {
       await q.rollbackTransaction()
       throw error
+    } finally {
+      await q.release()
     }
   }
 
@@ -51,6 +53,8 @@ export class UsersController {
     } catch (error) {
       await q.rollbackTransaction()
       throw error
+    } finally {
+      await q.release()
     }
   }
 
@@ -67,6 +71,8 @@ export class UsersController {
     } catch (error) {
       await q.rollbackTransaction()
       throw error
+    } finally {
+      await q.release()
     }
   }
 
@@ -84,6 +90,8 @@ export class UsersController {
     } catch (error) {
       await q.rollbackTransaction()
       throw error
+    } finally {
+      await q.release()
     }
   }
 
@@ -100,21 +108,28 @@ export class UsersController {
     } catch (error) {
       await q.rollbackTransaction()
       throw error
+    } finally {
+      await q.release()
     }
   }
 
   @Public()
-  @Post('/username')
-  async findByUsername(@Body() { username }: { username: string }) {
+  @Post('/verify')
+  async findByUsername(
+    @Body()
+    { username, email }: { username: string, email: string },
+  ) {
     const q = await this.getQueryRunner()
     await q.startTransaction()
     try {
-      const user = await this.usersService.findUserByUsername(q, username)
+      const alreadyExist = await this.usersService.verifyUsernameAndEmail(q, username, email)
       await q.commitTransaction()
-      return user
+      return alreadyExist
     } catch (error) {
       await q.rollbackTransaction()
       throw error
+    } finally {
+      await q.release()
     }
   }
 }

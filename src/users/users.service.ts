@@ -13,8 +13,7 @@ export class UsersService {
   constructor() {}
 
   async createUser(q: QueryRunner, createUserDto: CreateUserDto) {
-    const isAlreadyExist = await this.checkUserExist(q, createUserDto.username, createUserDto.email)
-    if (isAlreadyExist) throw AlreadyExists
+    await this.verifyUsernameAndEmail(q, createUserDto.username, createUserDto.email)
 
     const createdUser = await q.manager.save(User, createUserDto)
     const user = await this.findOne(q, createdUser.id)
@@ -41,8 +40,7 @@ export class UsersService {
   async update(q: QueryRunner, id: string, updateUserDto: CreateUserDto) {
     let user: UserResponseDto
 
-    const isAlreadyExist = await this.checkUserExist(q, updateUserDto.username, updateUserDto.email)
-    if(isAlreadyExist) throw AlreadyExists
+    await this.verifyUsernameAndEmail(q, updateUserDto.username, updateUserDto.email)
 
     await q.manager.update(User, id, updateUserDto)
     user = await this.findOne(q, id)
@@ -70,7 +68,13 @@ export class UsersService {
     return user
   }
 
-  checkUserExist(q: QueryRunner, username: string, email: string) {
-    return q.manager.findOne(User, { where: { username: username, email: email } })
+  async verifyUsernameAndEmail(q: QueryRunner, username: string, email: string) {
+    if (username) {
+      const isNotEmail = await q.manager.findOne(User, { where: { username: username, email: email } })
+      if (isNotEmail) throw AlreadyExists
+    }
+    const isEmail = await q.manager.findOne(User, { where: { email: email } })
+    if (isEmail) throw AlreadyExists
+    return
   }
 }
