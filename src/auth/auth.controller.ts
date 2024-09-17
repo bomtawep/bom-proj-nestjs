@@ -32,12 +32,14 @@ export class AuthController {
     const q = await this.getQueryRunner()
     await q.startTransaction()
     try {
-      const user = await this.authService.verifyUser(q, username, password);
+      const token = await this.authService.verifyUser(q, username, password);
       await q.commitTransaction()
-      return user;
+      return token;
     } catch (error) {
       await q.rollbackTransaction()
       throw error
+    } finally {
+      await q.release()
     }
   }
 
@@ -57,6 +59,8 @@ export class AuthController {
     } catch (error) {
       await q.rollbackTransaction()
       throw error
+    } finally {
+      await q.release()
     }
   }
 
@@ -71,6 +75,19 @@ export class AuthController {
       return user
     } catch (error) {
       await q.rollbackTransaction()
+      throw error
+    } finally {
+      await q.release()
+    }
+  }
+
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.USER, Role.ADMIN)
+  @Post('/sign-out')
+  async signOut(@Request() req: any) {
+    try {
+      return
+    } catch (error) {
       throw error
     }
   }
