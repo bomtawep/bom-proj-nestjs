@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from '~/users/dto/create-user.dto';
 import { QueryRunner } from 'typeorm';
 import { User } from '~/entities/users.entity';

@@ -15,8 +15,9 @@ import { AuthModule } from './auth/auth.module';
 import { LoggerModule } from './logger/logger.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from '~/auth/constants';
-import { AuthGuard } from '~/auth/auth.guard';
-import { RolesGuard } from '~/auth/roles.guard';
+import { ImagesModule } from './images/images.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -46,6 +47,10 @@ import { RolesGuard } from '~/auth/roles.guard';
       load: [appConfig],
       isGlobal: true,
     }),
+    ServeStaticModule.forRoot({
+      rootPath: (join(__dirname, '../uploads')),
+      serveRoot: '/uploads/',
+    }),
     // ScheduleModule.forRoot(),
     // ThrottlerModule.forRoot({ ttl: 60, limit: 60 }),
     // EventEmitterModule.forRoot({
@@ -54,6 +59,7 @@ import { RolesGuard } from '~/auth/roles.guard';
     UsersModule,
     AuthModule,
     LoggerModule,
+    ImagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
