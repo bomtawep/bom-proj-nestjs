@@ -73,4 +73,10 @@ export class User extends Common {
     default: 'USER',
   })
   roles: string;
+
+  @Column({
+    name: 'IMAGE_ID',
+    nullable: true,
+  })
+  imageId: string;
 }

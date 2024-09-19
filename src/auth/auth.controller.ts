@@ -53,7 +53,7 @@ export class AuthController {
     await q.startTransaction()
     const { user } = req
     try {
-      const session = await this.usersService.findUserByUserId(q, user.id)
+      const session = await this.usersService.findUserByUserId(q, user.sub)
       await q.commitTransaction()
       return session;
     } catch (error) {

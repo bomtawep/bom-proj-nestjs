@@ -28,6 +28,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       message: exception.message,
       timestamp: new Date(),
       path: request.url,
+      stack: exception.stack,
     }).then(() => console.error(`LOG ERROR => Status code: ${status}` + ` | Message: ${exception.message}`));
   }
 }

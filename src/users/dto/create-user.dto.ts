@@ -28,7 +28,7 @@ export class CreateUserDto {
 
   @IsString()
   @IsOptional()
-  phone_number?: string;
+  phoneNumber?: string;
 
   @IsNotEmpty()
   @IsString()
@@ -42,4 +42,13 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsEnum(UserStatus)
   status: string;
+
+  @IsNotEmpty()
+  @IsEnum(Role)
+  roles: string;
+
+  @IsString()
+  @IsOptional()
+  imageId: string;
+
 }

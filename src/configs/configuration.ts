@@ -27,5 +27,6 @@ export default () => ({
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME,
     synchronize: process.env.DATABASE_SYNCHRONIZE !== 'false',
-  }
+  },
+  MULTER_DEST: process.env.MULTER_DEST,
 });

@@ -26,12 +26,17 @@ export class Logger extends Common {
   message: string;
 
   @Column({
-    name: 'TIMESTAMP',
-  })
-  timestamp: Date;
-
-  @Column({
     name: 'PATH',
   })
   path: string;
+
+  @Column({
+    name: 'STACK',
+  })
+  stack: string;
+
+  @Column({
+    name: 'TIMESTAMP',
+  })
+  timestamp: Date;
 }
