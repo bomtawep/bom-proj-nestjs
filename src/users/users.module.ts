@@ -4,9 +4,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '~/entities/users.entity';
 import { UsersController } from '~/users/users.controller';
 import { LoggerModule } from '~/logger/logger.module';
+import { QueryRunnerModule } from '~/query-runner/query-runner.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), LoggerModule],
+  imports: [
+    LoggerModule,
+    QueryRunnerModule,
+    TypeOrmModule.forFeature([User]),
+  ],
   providers: [UsersService],
   controllers: [UsersController],
   exports: [UsersService],
