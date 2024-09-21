@@ -9,7 +9,7 @@ export class LoggerService {
     @InjectRepository(Logger)
     private readonly loggerRepository: Repository<Logger>,
   ) {}
-  async createLogger(logger: Partial<Logger>) {
+  public async createLogger(logger: Partial<Logger>) {
     return await this.loggerRepository.save(logger);
   }
 }
