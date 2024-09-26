@@ -18,6 +18,10 @@ import { jwtConstants } from '~/auth/constants';
 import { ImagesModule } from './images/images.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ProductTypeModule } from './product-type/product-type.module';
+import { ProductModule } from './product/product.module';
+import { PdfModule } from './pdf/pdf.module';
+import { BrandModule } from './brand/brand.module';
 
 @Module({
   imports: [
@@ -41,7 +45,7 @@ import { join } from 'path';
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '24h' },
+      signOptions: { expiresIn: '1d' },
     }),
     ConfigModule.forRoot({
       load: [appConfig],
@@ -60,6 +64,10 @@ import { join } from 'path';
     AuthModule,
     LoggerModule,
     ImagesModule,
+    ProductTypeModule,
+    ProductModule,
+    PdfModule,
+    BrandModule,
   ],
   controllers: [AppController],
   providers: [AppService],
