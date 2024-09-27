@@ -6,13 +6,12 @@ import { InjectDataSource } from '@nestjs/typeorm';
 export class QueryRunnerService {
   constructor(
     @InjectDataSource()
-    private readonly dataSource: DataSource
+    private readonly dataSource: DataSource,
   ) {}
 
   async getQueryRunner() {
-    const queryRunner = this.dataSource.createQueryRunner()
-    await queryRunner.connect()
-    return queryRunner
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    return queryRunner;
   }
-
 }

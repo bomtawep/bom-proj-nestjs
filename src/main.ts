@@ -28,17 +28,17 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
 
-  if (apiPrefix) app.setGlobalPrefix(apiPrefix)
+  if (apiPrefix) app.setGlobalPrefix(apiPrefix);
   app.useGlobalInterceptors(new TransformInterceptor());
   app.use(json({ limit: '50mb' }));
   app.use(urlencoded({ limit: '50mb', extended: true }));
   app.enableCors();
   dayjs.locale('th');
   SwaggerModule.setup('api', app, document);
-  try{
+  try {
     await app.listen(port);
-    logger.log(`Server running on ${app.getHttpServer().address().port}`)
-  }catch(error){
+    logger.log(`Server running on ${app.getHttpServer().address().port}`);
+  } catch (error) {
     logger.error('Error: ', error);
   }
 }

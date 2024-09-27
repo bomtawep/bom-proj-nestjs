@@ -1,13 +1,12 @@
-import { Module, SetMetadata } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { entities } from '~/entities';
-import { AppService } from '~/app.service'
+import { AppService } from '~/app.service';
 import { AppController } from '~/app.controller';
 import appConfig from '~/configs/configuration';
 import { UsersModule } from '~/users/users.module';
 import { bomDataSource } from '~/constants/datasource';
-import { APP_GUARD } from '@nestjs/core';
 // import { ScheduleModule } from '@nestjs/schedule';
 // import { ThrottlerModule } from '@nestjs/throttler';
 // import { EventEmitterModule } from '@nestjs/event-emitter';
@@ -35,10 +34,10 @@ import { BrandModule } from './brand/brand.module';
     TypeOrmModule.forRootAsync({
       name: bomDataSource.BOM,
       useFactory: (configService: ConfigService) => {
-          return ({
-            ...configService.get('database'),
-            entities: [...entities],
-          })
+        return {
+          ...configService.get('database'),
+          entities: [...entities],
+        };
       },
       inject: [ConfigService],
     }),
@@ -52,7 +51,7 @@ import { BrandModule } from './brand/brand.module';
       isGlobal: true,
     }),
     ServeStaticModule.forRoot({
-      rootPath: (join(__dirname, '../uploads')),
+      rootPath: join(__dirname, '../uploads'),
       serveRoot: '/uploads/',
     }),
     // ScheduleModule.forRoot(),
@@ -72,5 +71,4 @@ import { BrandModule } from './brand/brand.module';
   controllers: [AppController],
   providers: [AppService],
 })
-
 export class AppModule {}

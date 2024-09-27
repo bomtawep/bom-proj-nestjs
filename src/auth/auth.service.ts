@@ -12,16 +12,20 @@ export class AuthService {
 
   async verifyUser(q: QueryRunner, username: string, pass: string) {
     try {
-      const user = await this.usersService.findUserByUsername(q, username)
+      const user = await this.usersService.findUserByUsername(q, username);
       if (user && user.password !== pass) {
-        throw new HttpException('Wrong password', HttpStatus.FORBIDDEN)
+        throw new HttpException('Wrong password', HttpStatus.FORBIDDEN);
       }
-      const payload = { sub: user.id, username: user.username, roles: user.roles };
+      const payload = {
+        sub: user.id,
+        username: user.username,
+        roles: user.roles,
+      };
       return {
-        access_token: await this.jwtService.signAsync(payload)
-      }
+        access_token: await this.jwtService.signAsync(payload),
+      };
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 }

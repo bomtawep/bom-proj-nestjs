@@ -9,5 +9,4 @@ export class VerifyUserDto {
   @IsString()
   @IsEmail()
   email: string;
-
 }

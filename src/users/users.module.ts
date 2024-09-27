@@ -7,11 +7,7 @@ import { LoggerModule } from '~/logger/logger.module';
 import { QueryRunnerModule } from '~/query-runner/query-runner.module';
 
 @Module({
-  imports: [
-    LoggerModule,
-    QueryRunnerModule,
-    TypeOrmModule.forFeature([User]),
-  ],
+  imports: [LoggerModule, QueryRunnerModule, TypeOrmModule.forFeature([User])],
   providers: [UsersService],
   controllers: [UsersController],
   exports: [UsersService],

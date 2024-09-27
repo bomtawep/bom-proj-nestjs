@@ -1,4 +1,11 @@
-import { Controller, Get, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ImagesService } from '~/images/images.service';
 import { DataSource } from 'typeorm';
@@ -10,29 +17,28 @@ export class ImagesController {
     @InjectDataSource()
     private readonly dataSource: DataSource,
     private readonly imagesService: ImagesService,
-  ) {
-  }
+  ) {}
 
   private async getQueryRunner() {
-    const queryRunner = this.dataSource.createQueryRunner()
-    await queryRunner.connect()
-    return queryRunner
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    return queryRunner;
   }
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    const q = await this.getQueryRunner()
-    await q.startTransaction()
+    const q = await this.getQueryRunner();
+    await q.startTransaction();
     try {
-      const image = await this.imagesService.uploadFile(q, file)
-      await q.commitTransaction()
-      return image
+      const image = await this.imagesService.uploadFile(q, file);
+      await q.commitTransaction();
+      return image;
     } catch (error) {
-      await q.rollbackTransaction()
-      throw error
+      await q.rollbackTransaction();
+      throw error;
     } finally {
-      await q.release()
+      await q.release();
     }
   }
 
@@ -51,17 +57,17 @@ export class ImagesController {
 
   @Get(':id')
   async getFile(@Param('id') id: string) {
-    const q = await this.getQueryRunner()
-    await q.startTransaction()
+    const q = await this.getQueryRunner();
+    await q.startTransaction();
     try {
-      const file = await this.imagesService.findOne(q, id)
-      await q.commitTransaction()
-      return file
+      const file = await this.imagesService.findOne(q, id);
+      await q.commitTransaction();
+      return file;
     } catch (error) {
-      await q.rollbackTransaction()
-      return error
+      await q.rollbackTransaction();
+      return error;
     } finally {
-      await q.release()
+      await q.release();
     }
   }
 }

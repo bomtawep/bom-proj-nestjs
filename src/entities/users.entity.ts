@@ -1,14 +1,7 @@
-import {
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Common } from '~/entities/common.entity';
 
-@Entity(
-  'USERS',
-  { schema: 'BOM', }
-)
+@Entity('USERS', { schema: 'BOM' })
 export class User extends Common {
   @PrimaryGeneratedColumn('uuid', {
     name: 'ID',
@@ -37,7 +30,7 @@ export class User extends Common {
 
   @Column({
     nullable: true,
-    name: 'NICKNAME'
+    name: 'NICKNAME',
   })
   nickname: string | null;
 
@@ -48,7 +41,7 @@ export class User extends Common {
 
   @Column({
     nullable: true,
-    name: 'PHONE_NUMBER'
+    name: 'PHONE_NUMBER',
   })
   phoneNumber: string | null;
 
@@ -59,7 +52,7 @@ export class User extends Common {
 
   @Column({
     nullable: true,
-    name: 'ADDRESS'
+    name: 'ADDRESS',
   })
   address: string | null;
 

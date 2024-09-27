@@ -5,11 +5,4 @@ import { Product } from '~/entities/product.entity';
 import { ProductType } from '~/entities/product-type.entity';
 import { Brand } from '~/entities/brand.entity';
 
-export const entities = [
-  User,
-  Logger,
-  Files,
-  Product,
-  ProductType,
-  Brand,
-];
+export const entities = [User, Logger, Files, Product, ProductType, Brand];

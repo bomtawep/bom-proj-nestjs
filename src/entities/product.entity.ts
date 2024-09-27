@@ -1,10 +1,7 @@
 import { Common } from '~/entities/common.entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity(
-  'PRODUCT',
-  { schema: 'BOM', }
-)
+@Entity('PRODUCT', { schema: 'BOM' })
 export class Product extends Common {
   @PrimaryGeneratedColumn('uuid', {
     name: 'ID',
