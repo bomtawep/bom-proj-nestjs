@@ -1,14 +1,7 @@
-import {
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Common } from '~/entities/common.entity';
 
-@Entity(
-  'LOGGER',
-  { schema: 'BOM', }
-)
+@Entity('LOGGER', { schema: 'BOM' })
 export class Logger extends Common {
   @PrimaryGeneratedColumn('uuid', {
     name: 'ID',

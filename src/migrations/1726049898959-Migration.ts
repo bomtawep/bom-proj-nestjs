@@ -1,10 +1,10 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class Migration1726049898959 implements MigrationInterface {
-    name = 'Migration1726049898959'
+  name = 'Migration1726049898959';
 
-    public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`
             CREATE SCHEMA "BOM"
             CREATE TABLE "BOM"."USERS" (
                 "CREATED_AT" TIMESTAMP NOT NULL DEFAULT now(),
@@ -24,13 +24,12 @@ export class Migration1726049898959 implements MigrationInterface {
                 CONSTRAINT "PK_475d4b511309ada89807bc2d40b" PRIMARY KEY ("ID")
             )
         `);
-    }
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`
             CREATE SCHEMA "BOM"
             DROP TABLE "BOM"."USERS"
         `);
-    }
-
+  }
 }

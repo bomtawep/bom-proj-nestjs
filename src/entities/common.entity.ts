@@ -1,5 +1,4 @@
-import { Column, CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
-import { IsDate, IsNotEmpty } from 'class-validator';
+import { CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
 
 export abstract class Common {
   @CreateDateColumn({

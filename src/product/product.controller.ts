@@ -19,17 +19,17 @@ export class ProductController {
   @Roles(Role.ADMIN, Role.USER)
   @Post()
   async create(@Body() product: Product) {
-    const q = await this.queryRunnerService.getQueryRunner()
-    await q.startTransaction()
+    const q = await this.queryRunnerService.getQueryRunner();
+    await q.startTransaction();
     try {
       const productType = await this.productService.createProduct(q, product);
-      await q.commitTransaction()
-      return productType
+      await q.commitTransaction();
+      return productType;
     } catch (error) {
-      await q.rollbackTransaction()
-      throw error
+      await q.rollbackTransaction();
+      throw error;
     } finally {
-      await q.release()
+      await q.release();
     }
   }
 }

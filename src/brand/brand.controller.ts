@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Inject, Post, UseFilters, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Post,
+  UseFilters,
+  UseGuards,
+} from '@nestjs/common';
 import { BrandService } from '~/brand/brand.service';
 import { HttpExceptionFilter } from '~/utilities/http-exception.filter';
 import { QueryRunnerService } from '~/query-runner/query-runner.service';
@@ -11,27 +19,27 @@ import { BrandDto } from '~/brand/dto/brand.dto';
 @UseFilters(HttpExceptionFilter)
 @Controller('brand')
 export class BrandController {
-    constructor(
-      @Inject(QueryRunnerService)
-      private readonly queryRunnerService: QueryRunnerService,
-      private readonly brandService: BrandService,
-    ) {}
+  constructor(
+    @Inject(QueryRunnerService)
+    private readonly queryRunnerService: QueryRunnerService,
+    private readonly brandService: BrandService,
+  ) {}
 
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.USER)
   @Post()
   async create(@Body() brandDto: BrandDto) {
-    const q = await this.queryRunnerService.getQueryRunner()
-    await q.startTransaction()
+    const q = await this.queryRunnerService.getQueryRunner();
+    await q.startTransaction();
     try {
       const brand = await this.brandService.createBrand(q, brandDto);
-      await q.commitTransaction()
-      return brand
+      await q.commitTransaction();
+      return brand;
     } catch (error) {
-      await q.rollbackTransaction()
-      throw error
+      await q.rollbackTransaction();
+      throw error;
     } finally {
-      await q.release()
+      await q.release();
     }
   }
 
@@ -39,17 +47,17 @@ export class BrandController {
   @Roles(Role.ADMIN, Role.USER)
   @Get()
   async get() {
-    const q = await this.queryRunnerService.getQueryRunner()
-    await q.startTransaction()
+    const q = await this.queryRunnerService.getQueryRunner();
+    await q.startTransaction();
     try {
-      const brand = await this.brandService.findAllBrand(q)
-      await q.commitTransaction()
-      return brand
+      const brand = await this.brandService.findAllBrand(q);
+      await q.commitTransaction();
+      return brand;
     } catch (error) {
-      await q.rollbackTransaction()
-      throw error
+      await q.rollbackTransaction();
+      throw error;
     } finally {
-      await q.release()
+      await q.release();
     }
   }
 }

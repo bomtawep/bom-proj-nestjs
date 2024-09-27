@@ -1,9 +1,8 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { Gender, Role, UserStatus } from '~/constants/enum';
 import { VerifyUserDto } from '~/users/dto/verify-user.dto';
 
 export class CreateUserDto extends VerifyUserDto {
-
   @IsNotEmpty()
   @IsString()
   password: string;
@@ -43,5 +42,4 @@ export class CreateUserDto extends VerifyUserDto {
   @IsString()
   @IsOptional()
   imageId: string;
-
 }

@@ -13,6 +13,6 @@ import { ProductType } from '~/entities/product-type.entity';
     TypeOrmModule.forFeature([ProductType]),
   ],
   providers: [BrandService],
-  controllers: [BrandController]
+  controllers: [BrandController],
 })
 export class BrandModule {}

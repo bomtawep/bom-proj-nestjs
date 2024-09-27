@@ -1,10 +1,10 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class Migration1727337936302 implements MigrationInterface {
-    name = 'Migration1727337936302'
+  name = 'Migration1727337936302';
 
-    public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`
             CREATE TABLE "BOM"."BRAND" (
                 "CREATED_AT" TIMESTAMP NOT NULL DEFAULT now(),
                 "UPDATED_AT" TIMESTAMP NOT NULL DEFAULT now(),
@@ -14,19 +14,18 @@ export class Migration1727337936302 implements MigrationInterface {
                 CONSTRAINT "PK_696b35a337338c9004873a989f0" PRIMARY KEY ("ID")
             )
         `);
-        await queryRunner.query(`
+    await queryRunner.query(`
             ALTER TABLE "BOM"."PRODUCT"
             ADD "COST" integer NOT NULL DEFAULT 0
         `);
-    }
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`
             ALTER TABLE "BOM"."PRODUCT" DROP COLUMN "COST"
         `);
-        await queryRunner.query(`
+    await queryRunner.query(`
             DROP TABLE "BOM"."BRAND"
         `);
-    }
-
+  }
 }

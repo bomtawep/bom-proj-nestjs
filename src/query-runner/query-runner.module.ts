@@ -3,6 +3,6 @@ import { QueryRunnerService } from './query-runner.service';
 
 @Module({
   providers: [QueryRunnerService],
-  exports: [QueryRunnerService]
+  exports: [QueryRunnerService],
 })
 export class QueryRunnerModule {}

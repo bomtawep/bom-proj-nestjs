@@ -1,4 +1,12 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Request, UseFilters, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UseFilters,
+  UseGuards,
+} from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { HttpExceptionFilter } from '~/utilities/http-exception.filter';
@@ -21,79 +29,79 @@ export class AuthController {
   ) {}
 
   private async getQueryRunner() {
-    const queryRunner = this.dataSource.createQueryRunner()
-    await queryRunner.connect()
-    return queryRunner
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    return queryRunner;
   }
 
   @Public()
   @Post('/sign-in')
-  async signIn(@Body() { username, password }: { username: string, password: string }) {
-    const q = await this.getQueryRunner()
-    await q.startTransaction()
+  async signIn(
+    @Body() { username, password }: { username: string; password: string },
+  ) {
+    const q = await this.getQueryRunner();
+    await q.startTransaction();
     try {
       const token = await this.authService.verifyUser(q, username, password);
-      await q.commitTransaction()
+      await q.commitTransaction();
       return token;
     } catch (error) {
-      await q.rollbackTransaction()
-      throw error
+      await q.rollbackTransaction();
+      throw error;
     } finally {
-      await q.release()
+      await q.release();
     }
   }
 
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.USER)
   @Get('/session')
-  async getSession(
-    @Request() req: any
-  ) {
-    const q = await this.getQueryRunner()
-    await q.startTransaction()
-    const { user } = req
+  async getSession(@Request() req: any) {
+    const q = await this.getQueryRunner();
+    await q.startTransaction();
+    const { user } = req;
     try {
-      const session = await this.usersService.findUserByUserId(q, user.sub)
-      await q.commitTransaction()
+      const session = await this.usersService.findUserByUserId(q, user.sub);
+      await q.commitTransaction();
       return session;
     } catch (error) {
-      await q.rollbackTransaction()
-      throw error
+      await q.rollbackTransaction();
+      throw error;
     } finally {
-      await q.release()
+      await q.release();
     }
   }
 
   @Public()
   @Post('/sign-up')
   async signUp(@Body() createUserDto: User) {
-    const q = await this.getQueryRunner()
-    await q.startTransaction()
+    const q = await this.getQueryRunner();
+    await q.startTransaction();
     try {
-      const user = await this.usersService.createUser(q, createUserDto)
-      await q.commitTransaction()
-      return user
+      const user = await this.usersService.createUser(q, createUserDto);
+      await q.commitTransaction();
+      return user;
     } catch (error) {
-      await q.rollbackTransaction()
-      throw error
+      await q.rollbackTransaction();
+      throw error;
     } finally {
-      await q.release()
+      await q.release();
     }
   }
 
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.USER, Role.ADMIN)
   @Post('/sign-out')
-  async signOut(@Request() req: any) {
+  async signOut() {
     try {
-      return
+      return;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
   @Get('/profile')
-  async getProfile(@Body() req: User) {
-    return 'profile'
+  async getProfile() {
+    return 'profile';
   }
 }
