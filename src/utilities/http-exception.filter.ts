@@ -26,6 +26,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       timestamp: new Date().toISOString(),
       path: request.url,
     });
+    console.log("LOG ERROR => Status code: " + status + " | Message: " + exception.message);
     this.loggerService
       .createLogger({
         statusCode: status.toString(),

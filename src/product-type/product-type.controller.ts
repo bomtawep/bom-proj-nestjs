@@ -2,8 +2,8 @@ import {
   Body,
   Controller,
   Get,
-  Inject,
-  Post,
+  Inject, Param,
+  Post, Query,
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
@@ -15,6 +15,7 @@ import { AuthGuard } from '~/auth/auth.guard';
 import { RolesGuard } from '~/auth/roles.guard';
 import { Roles } from '~/auth/auth.decorator';
 import { Role } from '~/constants/enum';
+import { PaginationDto } from '~/dto';
 
 @UseFilters(HttpExceptionFilter)
 @Controller('product-types')
@@ -50,13 +51,26 @@ export class ProductTypeController {
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.USER)
   @Get()
-  async get() {
+  async get(
+    @Query('page') page: number,
+    @Query('pageSize') pageSize: number,
+    @Query('limit') limit: number,
+  ) {
+    console.log('page', page);
+    const pagination = {
+      page: page,
+      pageSize: pageSize,
+      limit: limit,
+    }
     const q = await this.queryRunnerService.getQueryRunner();
     await q.startTransaction();
     try {
-      const productType = await this.productTypeService.findAllProductType(q);
+      const productType = await this.productTypeService.findAllProductType(q, pagination);
       await q.commitTransaction();
-      return productType;
+      return {
+        data: productType.products,
+        total: productType.total,
+      };
     } catch (error) {
       await q.rollbackTransaction();
       throw error;

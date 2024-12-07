@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { QueryRunner } from 'typeorm';
 import { ProductTypeDto } from '~/product-type/dto/product-type.dto';
 import { ProductType } from '~/entities/product-type.entity';
+import { PaginationDto } from '~/dto';
 
 @Injectable()
 export class ProductTypeService {
@@ -11,11 +12,19 @@ export class ProductTypeService {
     return q.manager.save(ProductType, productType);
   }
 
-  async findAllProductType(q: QueryRunner) {
-    const productType = await q.manager.find(ProductType);
-    // remove index before send response
-    console.log('productType', productType);
-    return productType;
+  async findAllProductType(q: QueryRunner, pagination: PaginationDto) {
+    console.log('pagination', pagination);
+    const offset = pagination.page * pagination.limit;
+    const [products, total] = await q.manager.findAndCount(ProductType, {
+      take: pagination.limit,
+      skip: offset,
+      order: { updated_at: 'DESC' },
+    });
+
+    return {
+      products,
+      total,
+    };
   }
 
   async findOneProductType() {
