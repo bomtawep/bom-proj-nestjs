@@ -2,8 +2,8 @@ import {
   Body,
   Controller,
   Get,
-  Inject,
-  Post,
+  Inject, Param,
+  Post, Put,
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
@@ -51,6 +51,42 @@ export class BrandController {
     await q.startTransaction();
     try {
       const brand = await this.brandService.findAllBrand(q);
+      await q.commitTransaction();
+      return brand;
+    } catch (error) {
+      await q.rollbackTransaction();
+      throw error;
+    } finally {
+      await q.release();
+    }
+  }
+
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.USER)
+  @Get('/:id')
+  async getBrandById(@Param('id') id: string) {
+    const q = await this.queryRunnerService.getQueryRunner();
+    await q.startTransaction();
+    try {
+      const brand = await this.brandService.findOneBrand(q, id);
+      await q.commitTransaction();
+      return brand;
+    } catch (error) {
+      await q.rollbackTransaction();
+      throw error;
+    } finally {
+      await q.release();
+    }
+  }
+
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.USER)
+  @Put('/:id')
+  async updateBrand(@Param('id') id: string, @Body() brandDto: BrandDto) {
+    const q = await this.queryRunnerService.getQueryRunner();
+    await q.startTransaction();
+    try {
+      const brand = await this.brandService.updateBrand(q, id, brandDto);
       await q.commitTransaction();
       return brand;
     } catch (error) {

@@ -15,12 +15,12 @@ export class BrandService {
     return await q.manager.find(Brand);
   }
 
-  async findOneBrand() {
-    return 'This action returns a brand';
+  async findOneBrand(q: QueryRunner, id: string) {
+    return q.manager.findOne(Brand, { where: { id: id } });
   }
 
-  async updateBrand() {
-    return 'This action updates a brand';
+  async updateBrand(q: QueryRunner, id: string, brandDto: BrandDto) {
+    return q.manager.update(Brand, id, brandDto);
   }
 
   async removeBrand() {
