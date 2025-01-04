@@ -1,21 +1,5 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-
-switch (process.env.APP_MODE) {
-  case 'development':
-    dotenv.config({ path: '.env.development' });
-    break;
-  case 'test':
-    dotenv.config({ path: '.env.test' });
-    break;
-  case 'production':
-    dotenv.config({ path: '.env.production' });
-    break;
-  default:
-    dotenv.config({ path: '.env.development' });
-    break;
-}
-
 export default () => ({
   port: process.env.PORT || 3000,
   API_PREFIX: process.env.API_PREFIX,

@@ -20,7 +20,10 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli",
     "migration:generate": "yarn typeorm migration:generate --pretty ./src/migrations/Migration",
-    "migration:run": "yarn typeorm migration:run",
+    "migration:development": "yarn typeorm migration:run -d src/migrations/datasources/datasource.development.ts",
+    "migration:staging": "yarn typeorm migration:run -d src/migrations/datasources/datasource.staging.ts",
+    "migration:uat": "yarn typeorm migration:run -d src/migrations/datasources/datasource.uat.ts",
+    "migration:production": "yarn typeorm migration:run -d src/migrations/datasources/datasource.production.ts",
     "migration:revert": "yarn typeorm migration:revert"
   },
   "dependencies": {
