@@ -13,7 +13,6 @@ export class ProductTypeService {
   }
 
   async findAllProductType(q: QueryRunner, pagination: PaginationDto) {
-    console.log('pagination', pagination);
     const offset = pagination.page * pagination.limit;
     const [products, total] = await q.manager.findAndCount(ProductType, {
       take: pagination.limit,

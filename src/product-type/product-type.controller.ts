@@ -53,13 +53,13 @@ export class ProductTypeController {
   @Get()
   async get(
     @Query('page') page: number,
-    @Query('pageSize') pageSize: number,
+    @Query('total') total: number,
     @Query('limit') limit: number,
   ) {
     console.log('page', page);
     const pagination = {
       page: page,
-      pageSize: pageSize,
+      total: total,
       limit: limit,
     }
     const q = await this.queryRunnerService.getQueryRunner();

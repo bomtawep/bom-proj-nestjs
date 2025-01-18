@@ -1,6 +1,11 @@
-import { CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
+import {CreateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
 
 export abstract class Common {
+  @PrimaryGeneratedColumn('uuid', {
+    name: 'ID',
+  })
+  id: string;
+
   @CreateDateColumn({
     name: 'CREATED_AT',
   })

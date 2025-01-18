@@ -3,11 +3,6 @@ import { Common } from '~/entities/common.entity';
 
 @Entity('FILES', { schema: 'BOM' })
 export class Files extends Common {
-  @PrimaryGeneratedColumn('uuid', {
-    name: 'ID',
-  })
-  id: string;
-
   @Column({
     name: 'ORIGINAL_NAME',
   })

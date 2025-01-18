@@ -3,11 +3,6 @@ import { Common } from '~/entities/common.entity';
 
 @Entity('USERS', { schema: 'BOM' })
 export class User extends Common {
-  @PrimaryGeneratedColumn('uuid', {
-    name: 'ID',
-  })
-  id: string;
-
   @Column({
     name: 'USERNAME',
   })

@@ -3,11 +3,6 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('PRODUCT', { schema: 'BOM' })
 export class Product extends Common {
-  @PrimaryGeneratedColumn('uuid', {
-    name: 'ID',
-  })
-  id: string;
-
   @Column({
     name: 'NAME',
   })
