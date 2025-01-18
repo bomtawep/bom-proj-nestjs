@@ -1,9 +1,9 @@
 import {
   Body,
-  Controller,
+  Controller, Delete,
   Get,
   Inject, Param,
-  Post, Put,
+  Post, Put, Query,
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
@@ -46,11 +46,19 @@ export class BrandController {
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.USER)
   @Get()
-  async get() {
+  async get(
+      @Query('page') page: number,
+      @Query('limit') limit: number,
+  ) {
     const q = await this.queryRunnerService.getQueryRunner();
     await q.startTransaction();
+    const pagination = {
+      page: page,
+      limit: limit,
+    }
+    console.log('pagination', pagination);
     try {
-      const brand = await this.brandService.findAllBrand(q);
+      const brand = await this.brandService.findAllBrand(q, pagination);
       await q.commitTransaction();
       return brand;
     } catch (error) {
@@ -95,5 +103,23 @@ export class BrandController {
     } finally {
       await q.release();
     }
+  }
+
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.USER)
+  @Delete('/:id')
+  async deleteBrand(@Param('id') id: string) {
+      const q = await this.queryRunnerService.getQueryRunner();
+      await q.startTransaction();
+      try {
+      const brand = await this.brandService.removeBrand(q, id);
+      await q.commitTransaction();
+      return brand;
+      } catch (error) {
+      await q.rollbackTransaction();
+      throw error;
+      } finally {
+      await q.release();
+      }
   }
 }

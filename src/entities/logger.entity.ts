@@ -3,11 +3,6 @@ import { Common } from '~/entities/common.entity';
 
 @Entity('LOGGER', { schema: 'BOM' })
 export class Logger extends Common {
-  @PrimaryGeneratedColumn('uuid', {
-    name: 'ID',
-  })
-  id: string;
-
   @Column({
     name: 'STATUS_CODE',
   })
