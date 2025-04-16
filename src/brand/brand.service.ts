@@ -11,9 +11,15 @@ import {PaginationDto} from "~/dto";
 export class BrandService {
   constructor() {}
 
-  async createBrand(q: QueryRunner, brand: BrandDto) {
+  async createBrand(q: QueryRunner, brand: BrandDto, user: string) {
     const brandEntity = plainToClass(BrandDto, brand);
-    return q.manager.save(Brand, brandEntity);
+    return q.manager.save(Brand, {
+      ...brandEntity,
+      created_at: new Date(),
+      updated_at: new Date(),
+      created_by: user,
+      updated_by: user,
+    });
   }
 
   async findAllBrand(q: QueryRunner, pagination: PaginationDto) {
@@ -22,6 +28,9 @@ export class BrandService {
     const [brand, total] = await q.manager.findAndCount(Brand, {
       take: limit,
       skip: (page - 1) * limit,
+      order: {
+        updated_at: 'DESC',
+      },
     });
 
     return {
@@ -37,11 +46,19 @@ export class BrandService {
     return q.manager.findOne(Brand, { where: { id: id } });
   }
 
-  async updateBrand(q: QueryRunner, id: string, brand: BrandDto) {
+  async updateBrand(q: QueryRunner, id: string, brand: BrandDto, user: string) {
     if (!isUUID(id)) {
       throw new BadRequestException('Invalid UUID');
     }
-    return q.manager.update(Brand, id, brand);
+    return q.manager.update(
+        Brand,
+        id,
+        {
+          ...brand,
+          updated_at: new Date(),
+          updated_by: user,
+        },
+    );
   }
 
   async removeBrand(q: QueryRunner, id: string) {

@@ -1,4 +1,4 @@
-import {CreateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
+import {Column, CreateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
 
 export abstract class Common {
   @PrimaryGeneratedColumn('uuid', {
@@ -18,6 +18,25 @@ export abstract class Common {
 
   @DeleteDateColumn({
     name: 'DELETED_AT',
+    nullable: true,
   })
   deleted_at: Date;
+
+  @Column({
+    name: 'CREATED_BY',
+    default: 'SYSTEM',
+  })
+  created_by: string;
+
+  @Column({
+    name: 'UPDATED_BY',
+    default: 'SYSTEM',
+  })
+  updated_by: string;
+
+  @Column({
+    name: 'DELETED_BY',
+    nullable: true,
+  })
+  deleted_by: string;
 }

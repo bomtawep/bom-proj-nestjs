@@ -2,10 +2,16 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from '~/app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as dayjs from 'dayjs';
+import 'dayjs/locale/th';
+import * as utc from 'dayjs/plugin/utc';
+import * as timezone from 'dayjs/plugin/timezone';
 import { Logger } from '@nestjs/common';
 import { urlencoded, json } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { TransformInterceptor } from '~/utilities/transform-interceptor';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -34,6 +40,7 @@ async function bootstrap() {
   app.use(urlencoded({ limit: '50mb', extended: true }));
   app.enableCors();
   dayjs.locale('th');
+  dayjs.tz.setDefault('Asia/Bangkok');
   SwaggerModule.setup('api', app, document);
   try {
     await app.listen(port);

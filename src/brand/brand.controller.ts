@@ -1,6 +1,8 @@
 import {
   Body,
-  Controller, Delete,
+  Request,
+  Controller,
+  Delete,
   Get,
   Inject, Param,
   Post, Put, Query,
@@ -15,6 +17,7 @@ import { RolesGuard } from '~/auth/roles.guard';
 import { Roles } from '~/auth/auth.decorator';
 import { Role } from '~/constants/enum';
 import { BrandDto } from '~/brand/dto/brand.dto';
+import {TRequest} from "~/types/request.types";
 
 @UseFilters(HttpExceptionFilter)
 @Controller('brand')
@@ -28,11 +31,14 @@ export class BrandController {
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.USER)
   @Post()
-  async create(@Body() brandDto: BrandDto) {
+  async create(
+    @Body() brandDto: BrandDto,
+    @Request() req: TRequest,
+  ) {
     const q = await this.queryRunnerService.getQueryRunner();
     await q.startTransaction();
     try {
-      const brand = await this.brandService.createBrand(q, brandDto);
+      const brand = await this.brandService.createBrand(q, brandDto, req.user.sub);
       await q.commitTransaction();
       return brand;
     } catch (error) {
@@ -90,11 +96,15 @@ export class BrandController {
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.USER)
   @Put('/:id')
-  async updateBrand(@Param('id') id: string, @Body() brandDto: BrandDto) {
+  async updateBrand(
+    @Param('id') id: string,
+    @Body() brandDto: BrandDto,
+    @Request() req: TRequest,
+  ) {
     const q = await this.queryRunnerService.getQueryRunner();
     await q.startTransaction();
     try {
-      const brand = await this.brandService.updateBrand(q, id, brandDto);
+      const brand = await this.brandService.updateBrand(q, id, brandDto, req.user.sub);
       await q.commitTransaction();
       return brand;
     } catch (error) {
